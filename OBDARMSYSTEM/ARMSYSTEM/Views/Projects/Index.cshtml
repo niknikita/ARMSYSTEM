@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ARMSYSTEM.Models.Projects>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@(Html.Kendo().Grid<ARMSYSTEM.Models.Projects>()
+        .Name("ProjectGrid")
+        .Columns(column=> {
+            column.Select().Width(50);
+            column.Bound(n => n.Name).ClientTemplate("<a href=" + Url.Content("Projects/Edit/") + "#: Id #>#: Name #</a></td>");
+            column.Bound(n => n.Descripion);
+            column.Bound(n => n.DateCreate);
+            column.Command(command => command.Custom("Подробно..."));
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Excel().Text("Сохранить в Excel");
+        })
+        .Scrollable(s => s.Height(550))
+        .Sortable()
+        .Navigatable()
+        .Selectable(selectable =>
+        {
+            selectable.Mode(GridSelectionMode.Multiple);
+            selectable.Type(GridSelectionType.Cell);
+        })
+        .Filterable()
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new int[] { 100, 500, 1000 })
+            .ButtonCount(10))
+        .DataSource(datasourse=>datasourse
+        .Ajax()
+        .Read(read=>read.Action("ProjectDataRead", "Projects")))
+        )

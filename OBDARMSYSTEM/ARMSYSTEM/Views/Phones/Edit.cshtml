@@ -1,0 +1,79 @@
+﻿@model ARMSYSTEM.Models.Phones
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<hr />
+<div class="row">
+    <div class="col-lg-8">
+        <form asp-action="Edit">
+            <div class="col-lg-6 col-sm-6 col-xs-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="k-textbox" placeholder="Телефон" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="k-textbox" placeholder="Город" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Street" class="control-label"></label>
+                    <input asp-for="Street" class="k-textbox" placeholder="Улица" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="House" class="control-label"></label>
+                    <input asp-for="House" class="k-textbox" placeholder="Дом" />
+                    <span asp-validation-for="House" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Apartment" class="control-label"></label>
+                    <input asp-for="Apartment" class="k-textbox" placeholder="Квартира/офис" />
+                    <span asp-validation-for="Apartment" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <label asp-for="Sex" class="control-label"></label>
+                    <input asp-for="Sex" class="k-textbox" placeholder="Пол" />
+                    <span asp-validation-for="Sex" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="k-textbox" placeholder="Имя" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Family" class="control-label"></label>
+                    <input asp-for="Family" class="k-textbox" placeholder="Фамилия" />
+                    <span asp-validation-for="Family" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Patronymic" class="control-label"></label>
+                    <input asp-for="Patronymic" class="k-textbox" placeholder="Отчество" />
+                    <span asp-validation-for="Patronymic" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateUpdate" class="control-label"></label>
+                    <kendo-datetimepicker for="DateUpdate" placeholder="Дата обновления" />
+                    <span asp-validation-for="DateUpdate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                @(Html.Kendo().Button()
+                        .Name("submit")
+                        .Content("сохранить")
+                        .HtmlAttributes(new { type = "submit", @class = "k-primary" }))
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

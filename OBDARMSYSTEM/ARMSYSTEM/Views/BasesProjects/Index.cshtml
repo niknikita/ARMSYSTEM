@@ -1,0 +1,30 @@
+﻿@using ARMSYSTEM.ViewModels
+@model IEnumerable<ARMSYSTEM.ViewModels.BasesProjectViewModel>
+@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@(Html.Kendo().Grid(Model)
+    .Name("Grid")
+    .Columns(column=> {
+        column.Bound(c => c.id);
+        column.Bound(c => c.Name);
+        column.Bound(c => c.ProjectName);        
+        column.Bound(c => c.idParrentBase);
+        column.Bound(c => c.description);
+        column.Bound(c => c.filters);
+        column.Bound(c => c.dateCreate);
+    })
+    .Scrollable(s => s.Height(550))
+    .Sortable()
+    .Filterable()
+    .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new int[] { 100, 500, 1000 })
+            .ButtonCount(10))
+    .DataSource(datasource => datasource
+            .Ajax()            
+            .ServerOperation(false))
+    )

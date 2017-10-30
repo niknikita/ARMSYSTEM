@@ -1,0 +1,36 @@
+﻿@model ARMSYSTEM.Models.Projects
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control k-textbox" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripion" class="control-label"></label>
+                <textarea asp-for="Descripion" style="width:100%; height:200px;" class="form-control k-textbox"></textarea>
+                <span asp-validation-for="Descripion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreate" class="control-label"></label>
+                <kendo-datetimepicker for="DateCreate" class="form-control k-textbox" />
+                <span asp-validation-for="DateCreate" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

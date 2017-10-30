@@ -1,0 +1,36 @@
+﻿@model ARMSYSTEM.Models.Projects
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="row">
+    <div class="col-lg-10">
+        <form asp-action="Create" asp-controller="Projects" method="post">
+            <div class="form-group">
+                <label>Название проекта</label><br />
+                <input type="text" asp-for="Name" style="width:100%" class="k-textbox"/>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <label>Описание</label><br/>
+                        <textarea cols=11 asp-for="Descripion" style="width:100%; height:200px;" class="k-textbox"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-*">
+                        @(Html.Kendo().Button()
+                        .Name("submit")
+                        .Content("сохранить")
+                        .HtmlAttributes(new { type = "submit", @class = "k-primary" }))
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

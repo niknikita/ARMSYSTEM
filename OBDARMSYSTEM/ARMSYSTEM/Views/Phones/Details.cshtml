@@ -1,0 +1,86 @@
+﻿@model ARMSYSTEM.Models.Phones
+@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h2>@Model.Phone</h2> @(Html.Kendo().Button()
+                                        .Name("EditButton")
+                                        .Events(e=>e.Click("onClick"))
+                                        .Content("Редактировать"))
+    <script>
+        function onClick(e)
+        {
+            location = "../Edit/"+@Model.Id;
+        }
+    </script>
+    <hr />
+    <dl class="dl-horizontal">
+        <div class="col-lg-4">
+            <dt>
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Street)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Street)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.House)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.House)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Apartment)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Apartment)
+            </dd>
+        </div>
+        <div class="col-lg-5">
+            <dt>
+                @Html.DisplayNameFor(model => model.Sex)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Sex)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Family)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Family)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Patronymic)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Patronymic)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateUpdate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateUpdate)
+            </dd>
+        </div>
+    </dl>
+</div>

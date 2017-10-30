@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ARMSYSTEM.Models.BlackList>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    @(Html.Kendo().Grid<ARMSYSTEM.Models.BlackList>()
+            .Name("BlackList")
+            .Columns(columns =>
+            {
+                columns.Select().Width(50);
+                columns.Bound(n => n.Phone).Width(140);
+                columns.Bound(n => n.descripton);
+                columns.Command(command =>
+                {
+                    command.Destroy();
+                }).Width(150);
+            })
+            .ToolBar(toolbar =>
+            {
+                toolbar.Excel().Text("Сохранить в Excel");
+                toolbar.Create();
+                toolbar.Save();
+            })
+            .Selectable(selectable =>
+            {
+                selectable.Mode(GridSelectionMode.Multiple);
+                selectable.Type(GridSelectionType.Cell);
+            })
+            .Scrollable(s => s.Height(550))
+            .Sortable()
+            .Filterable()
+            .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(new int[] { 100, 500, 1000 })
+                .ButtonCount(10))
+            .DataSource(dataSourse => dataSourse
+                .Ajax()
+                .Read(read => read.Action("BlackListRead", "BlackLists")))
+        )    
+</div>

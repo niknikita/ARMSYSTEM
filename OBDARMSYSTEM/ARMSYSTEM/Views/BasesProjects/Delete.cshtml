@@ -1,0 +1,57 @@
+﻿@model ARMSYSTEM.Models.BasesProject
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BasesProject</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.idProject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.idProject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.idParrentBase)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.idParrentBase)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.filters)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.filters)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.dateCreate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dateCreate)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

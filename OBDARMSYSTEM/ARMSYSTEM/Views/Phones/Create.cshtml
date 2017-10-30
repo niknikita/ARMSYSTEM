@@ -1,0 +1,120 @@
+﻿@model ARMSYSTEM.Models.Phones
+@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<hr />
+
+<div class="row">
+    <div class="col-lg-10">
+        <form asp-action="Create" asp-controller="Phones" method="post">
+            <div class="form-group">
+                <label>Телефон</label>
+                <input type="tel" asp-for="Phone" class="k-textbox" pattern="[0-9]{9,10}"/>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class=" col-lg-4">
+                        <label>Фамилия</label>
+                        @(Html.Kendo().TextBoxFor(n => n.Family))
+                    </div>
+                    <div class=" col-lg-4">
+                        <label>Имя</label>
+                        @(Html.Kendo().TextBoxFor(n => n.Name))
+                    </div>
+                    <div class=" col-lg-4">
+                        <label>Отчество</label>
+                        @(Html.Kendo().TextBoxFor(n => n.Patronymic))
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class=" col-lg-12">
+                        <label>Пол</label>
+                        @(Html.Kendo().ComboBoxFor(n => n.Sex).Items(item =>
+                                                                        {
+                                                                            item.Add().Value("Men").Text("Мужской");
+                                                                            item.Add().Value("Woman").Text("Женский");
+                                                                        }).ClearButton(true) )
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <!--Сделать подгрузку городов из базы-->
+                    <div class="col-lg-3">
+                        <label>Город</label>
+                        @(Html.Kendo().AutoCompleteFor(n => n.City)
+                        .Filter("contains")
+                        .Placeholder("Название города")
+                        .BindTo(new string[] {
+                                    "г. Челябинск",
+                                    "г. Екатеринбург",
+                                    "г. Курган",
+                                    "г. Москва",
+                                    "г. Новосибирск",
+                        }))
+                    </div>
+                    <div class="col-lg-3">
+                        <label>Улица</label>
+                        @(Html.Kendo().AutoCompleteFor(n => n.Street)
+                        .Filter("contains")
+                        .Placeholder("Название Улицы")
+                        .BindTo(new string[] {
+                                    "пр-кт Победы",
+                                    "ул. Пушкина",
+                                    "ул. Кирова",
+                                    "пр-кт. Аль-фараби",                                    
+                        }))
+                    </div>
+                    <div class="col-lg-2">
+                        <label>Дом</label>
+                        @(Html.Kendo().AutoCompleteFor(n => n.House)
+                        .Filter("contains")
+                        .Placeholder("Дом")
+                        .AutoWidth(true)
+                        .BindTo(new string[] {
+                                    "д. 2",
+                                    "д. 4",
+                                    "д. 5",
+                                    "д. 9",
+                        }))
+                    </div>
+                    <div class="col-lg-2">
+                        <label>Квартира</label>
+                        @(Html.Kendo().AutoCompleteFor(n => n.Apartment)
+                        .Filter("contains")
+                        .Placeholder("Квартира")
+                        .AutoWidth(true)
+                        .BindTo(new string[] {
+                                    "кв. 2",
+                                    "кв. 15",
+                                    "кв. 45",
+                                    "кв. 55",
+                        }))
+                    </div>
+
+                </div>                
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-1">
+                        @(Html.Kendo().Button()
+                        .Name("submit")
+                        .Content("сохранить")
+                        .HtmlAttributes(new { type = "submit", @class = "k-primary" }))
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>   
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

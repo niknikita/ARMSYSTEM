@@ -1,0 +1,68 @@
+﻿@using ARMSYSTEM.Models
+@model IEnumerable<ARMSYSTEM.Models.Phones>
+@using Kendo.Mvc.UI
+@{
+    ViewData["Title"] = "Телефоны Физики";
+}
+<div class="row">
+      @(Html.Kendo().Button()
+        .Name("AddPhoneButton")
+        .HtmlAttributes(new { type = "button"})
+        .Content("Добавить телефон"))      
+      @(Html.Kendo().Button()
+        .Name("BlackListButton")
+        .HtmlAttributes(new { type = "button"})
+        .Content("Отправить в черный список"))     
+      
+
+</div>
+
+<div class="row">
+    @(Html.Kendo().Grid<ARMSYSTEM.Models.Phones>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Select().Width(50);            
+            columns.Bound(c => c.Phone).ClientTemplate("<a href=" + Url.Content("Details/") + "#: Id #>#: Phone #</a></td>").Width(120);
+            columns.Bound(c => c.City).Width(100);
+            columns.Bound(c => c.Street).Width(200);
+            columns.Bound(c => c.House).Width(80);
+            columns.Bound(c => c.Apartment);
+            columns.Bound(c => c.Name);
+            columns.Bound(c => c.Family);
+            columns.Bound(c => c.Patronymic);
+            columns.Bound(c => c.DateUpdate);
+        })
+        .Resizable(resize => resize.Columns(true))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .ToolBar(toolbar =>
+        {
+            toolbar.Excel().Text("Сохранить в Excel");
+        })
+        .HtmlAttributes(new { style = "height: 580px;" })
+        .Scrollable(s => s.Height(550))
+        .Navigatable()
+        .Selectable(selectable =>
+        {
+            selectable.Mode(GridSelectionMode.Multiple);
+            selectable.Type(GridSelectionType.Cell);
+        })
+        .AllowCopy(true)
+        .Groupable()
+        .Sortable()
+        .Filterable()
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(new int[] { 100, 500, 1000 })
+            .ButtonCount(10))
+        .DataSource(dataSourse => dataSourse
+            .Ajax()
+            .Read(read => read.Action("PhoneModelRead", "Phones")))
+    )
+</div>
+
+<style>
+    .cPhone{
+        color:cornflowerblue;
+    }
+</style>
