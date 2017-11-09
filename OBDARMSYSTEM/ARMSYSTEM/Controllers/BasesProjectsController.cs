@@ -66,8 +66,13 @@ namespace ARMSYSTEM.Controllers
 
         // GET: BasesProjects/Create
         public IActionResult Create()
-        {
+        {   
             return View();
+        }
+        public ActionResult ProjectsRead([DataSourceRequest] DataSourceRequest request)
+        {
+            var ProjectList = db.Projects;
+            return Json(ProjectList.ToDataSourceResult(request));
         }
 
         // POST: BasesProjects/Create
@@ -75,15 +80,16 @@ namespace ARMSYSTEM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,Name,idProject,idParrentBase,filters,description,dateCreate")] BasesProject basesProject)
+        public async Task<IActionResult> Create([Bind("id,Name,idProject,idParrentBase,filters,description,dateCreate")] BasesProject basesProjectread)
         {
             if (ModelState.IsValid)
-            {
-                db.Add(basesProject);
+            {                
+                db.Add(basesProjectread);
+                basesProjectread.dateCreate = DateTime.Now;
                 await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(basesProject);
+            return View(basesProjectread);
         }
 
         // GET: BasesProjects/Edit/5

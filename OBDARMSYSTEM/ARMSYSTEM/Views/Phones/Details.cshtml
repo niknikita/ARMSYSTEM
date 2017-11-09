@@ -4,83 +4,124 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<div>
-    <h2>@Model.Phone</h2> @(Html.Kendo().Button()
+<div class="row">
+    <div>
+        <h2>@Model.Phone</h2> @(Html.Kendo().Button()
                                         .Name("EditButton")
-                                        .Events(e=>e.Click("onClick"))
+                                        .Events(e => e.Click("onClick"))
                                         .Content("Редактировать"))
-    <script>
+        <script>
         function onClick(e)
         {
-            location = "../Edit/"+@Model.Id;
+            location = "/Phones/Edit/"+@Model.Id;
         }
-    </script>
-    <hr />
-    <dl class="dl-horizontal">
-        <div class="col-lg-4">
-            <dt>
-                @Html.DisplayNameFor(model => model.Id)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Id)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.City)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.City)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Street)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Street)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.House)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.House)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Apartment)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Apartment)
-            </dd>
-        </div>
-        <div class="col-lg-5">
-            <dt>
-                @Html.DisplayNameFor(model => model.Sex)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Sex)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Family)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Family)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Patronymic)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Patronymic)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.DateUpdate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.DateUpdate)
-            </dd>
-        </div>
-    </dl>
+        </script>
+        <hr />
+        <dl class="dl-horizontal">
+            <div class="col-lg-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.City)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.City)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Street)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Street)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.House)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.House)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Apartment)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Apartment)
+                </dd>
+            </div>
+            <div class="col-lg-5">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Sex)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Sex)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Family)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Family)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Patronymic)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Patronymic)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateUpdate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateUpdate)
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+<div class="row">
+    <div class="card col-lg-2">
+        <div class="cardheader">Проекты</div>
+        <div class="cardcontent">@ViewBag.PhoneBasesCount</div>
+        @if (ViewBag.PhoneBasesCount > 0)
+        {
+            @(Html.Kendo().ListBox()
+                   .Name("ListBoxProjectPhone")
+                   .BindTo(ViewBag.PhoneProjectList))
+        }
+        else
+        {
+            <span>в проектах ещё не учавствовал</span>
+        }
+    </div>
+    <div class="card col-lg-2">
+        <div class="cardheader">Базы</div>
+        <div class="cardcontent">@ViewBag.PhoneBasesCount</div>
+        @if (ViewBag.PhoneBasesCount > 0)
+        {
+            @(Html.Kendo().ListBox()
+                   .Name("ListBoxbasesPhone")
+                   .BindTo(ViewBag.PhoneBasesList))
+        }
+        else
+        {
+            <span>в проектах ещё не учавствовал</span>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2">
+        
+    </div>
+    <div class="col-lg-2">
+        
+        
+    </div>
+
 </div>

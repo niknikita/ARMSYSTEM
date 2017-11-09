@@ -1,44 +1,46 @@
 ﻿@model ARMSYSTEM.Models.Projects
 
+
 @{
     ViewData["Title"] = "Details";
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>Projects</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Descripion)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Descripion)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateCreate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateCreate)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-lg-10">
+        <h2>@Html.DisplayFor(model => model.Name)</h2>
+    </div>
+    <div class="col-lg-2">
+        @(Html.Kendo().Button()
+            .Name("ButtonCreateProject")
+            .Events(e => e.Click("onClick"))
+            .Content("Редактировать"))
+    </div>
+    <script>
+        function onClick(e) {
+            location = "../Edit/"+@Model.Id;
+        }
+    </script>
 </div>
-@(Html.Kendo().ListBox()
-        .Name("ListBases")
-        .DataSource(source=>source
-                .Read(read=>read
-                        .Action("ProjectDataRead", "Projects"))))
+
+<div class="row">
+    <div class="col-lg-2">
+        <h4>@Html.DisplayFor(model => model.Descripion)</h4>
+        <h6>@Html.DisplayFor(model => model.DateCreate)</h6>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2">
+        @(Html.Kendo().ListBox()
+            .Name("ListBases")
+            .Selectable(ListBoxSelectable.Single)
+            .HtmlAttributes(new { style = "Width:100%; height:100%;" })
+            .BindTo(ViewBag.BasesProject)
+        )
+    </div>
+    <div class="col-lg-2">
+        <div class="card">
+            <div class="cardheader">Количество телефонов</div>
+            <div class="cardcontent">@ViewBag.PhonesCount</div>            
+        </div>
+    </div>
+</div>
+

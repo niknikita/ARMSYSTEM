@@ -11,7 +11,7 @@ namespace ARMSYSTEM.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
+        [Required]        
         [Display(Name = "id")]
         public int id { get; set; }
 

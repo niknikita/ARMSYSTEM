@@ -9,6 +9,8 @@ using ARMSYSTEM.ViewModels;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
+using ARMSYSTEM.Services.FiltersFizPhone;
 
 namespace ARMSYSTEM.Controllers
 {
@@ -20,20 +22,20 @@ namespace ARMSYSTEM.Controllers
             db = context;
         }
 
-       
+
         // GET: Phones
         public ActionResult Index()
-        {            
+        {
             return View();
         }
         public ActionResult PhoneModelRead([DataSourceRequest] DataSourceRequest request)
         {
             var result = db.Phones.FromSql("SELECT A.* FROM [arm2].[dbo].[Phones] as A LEFT JOIN [arm2].dbo.BlackList as B ON B.phone = A.Phone WHERE B.phone IS NULL");
-            
+
             return Json(result.ToDataSourceResult(request));
             //return Json(db.Phones.ToDataSourceResult(request));
-        }
-       
+        }        
+
 
         // GET: Phones/Details/5
         public async Task<ActionResult> Details(long? id)
@@ -41,13 +43,19 @@ namespace ARMSYSTEM.Controllers
             if (id == null)
             {
                 return NotFound();
-            }            
+            }
             var phone = await db.Phones.SingleOrDefaultAsync(m => m.Id == id);
             if (phone == null)
             {
                 return NotFound();
             }
-
+            var PhoneStatCount = db.PhoneBases.Where(p => p.Phone == phone.Phone).Count();
+            SqlParameter param = new SqlParameter("@phone", phone.Phone);
+            var BasesList = db.BasesProject.FromSql("SELECT Phones.Phone, BasesProject.Name FROM dbo.Phones INNER JOIN dbo.PhoneBases ON Phones.Phone = PhoneBases.Phone INNER JOIN dbo.BasesProject ON PhoneBases.idBase = BasesProject.id WHERE Phones.Phone = @phone", param).Select(c=>c.Name).ToList();
+            var ProjectList = db.BasesProject.FromSql("SELECT Phones.Phone, Projects.Name FROM dbo.Phones INNER JOIN dbo.PhoneBases ON Phones.Phone = PhoneBases.Phone INNER JOIN dbo.Projects ON PhoneBases.idProject = Projects.id WHERE Phones.Phone = @phone", param).Select(c => c.Name).ToList();
+            ViewBag.PhoneBasesCount = PhoneStatCount;
+            ViewBag.PhoneBasesList = BasesList;
+            ViewBag.PhoneProjectList = ProjectList;
             return View(phone);
         }
 
@@ -68,18 +76,18 @@ namespace ARMSYSTEM.Controllers
             }
 
             try
-            {                
-                if (db.Phones.Any(p => p.Phone != phoneToCreate.Phone) )
+            {
+                if (db.Phones.Any(p => p.Phone != phoneToCreate.Phone))
                 {
-                    if (db.BlackList.Any(p => p.Phone == phoneToCreate.Phone)==false)
+                    if (db.BlackList.Any(p => p.Phone == phoneToCreate.Phone) == false)
                     {
                         phoneToCreate.DateUpdate = DateTime.Now;
                         db.Phones.Add(phoneToCreate);
                         await db.SaveChangesAsync();
                         return RedirectToAction("Create");
                     }
-                else                        
-                    return RedirectToAction("Index"); //вывод ошибки
+                    else
+                        return RedirectToAction("Index"); //вывод ошибки
                 }
                 else
                     return RedirectToAction("Edit"); //вывод ошибки
@@ -94,7 +102,7 @@ namespace ARMSYSTEM.Controllers
         // GET: Phones/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id !=null)
+            if (id != null)
             {
                 var phone = db.Phones.FirstOrDefault<Phones>(p => p.Id == id);
                 if (phone != null)
@@ -116,7 +124,7 @@ namespace ARMSYSTEM.Controllers
                     db.Phones.Update(phonesToEdit);
                     db.SaveChanges();
                 }
-                return RedirectToAction("Edit/"+ phonesToEdit.Id.ToString());
+                return RedirectToAction("Edit/" + phonesToEdit.Id.ToString());
             }
             catch
             {

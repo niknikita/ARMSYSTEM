@@ -2,16 +2,21 @@
 html {
     position: relative;
     min-height: 100%;
+    height:100%;
 }
 
 body {
-    padding-bottom: 60px;    
+    padding-bottom: 60px;
+    height: 98%;
 }
 
 /*Wrapping element 
  Set some basic padding to keep content from hitting the edges*/
-.body-content {    padding-left: 15px;
-    padding-right: 15px;    
+.body-content {
+    height: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: antiquewhite;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
@@ -35,6 +40,9 @@ textarea {
 .container-fluid .text-muted {
     margin: 20px 0;
 }
+.k-tabstrip-items {
+    padding: 10px 10px 0px 10px !important;
+}
 
 .k-widget.k-menu {
     float: right;
@@ -52,7 +60,7 @@ textarea {
 }
 
 h1 a {
-    color: #e0e0e0;
+    color: #b7b7b7;
     text-decoration: none;
 }
 
@@ -122,3 +130,24 @@ h1 a {
         margin-top: 17px;
     }
 }
+
+.card {
+    margin: 5px;
+    background: white;
+    align-content: center;
+    padding: 5px 10px;
+}
+    .card .cardheader {
+        color: #989898;
+        margin-top: auto;
+        margin-bottom: auto;
+        font-size: smaller;
+    }
+    .card .cardcontent {
+        font-size: 42px;
+        color: #a7a7a7;
+        margin-top: auto;
+        margin-bottom: auto;
+        text-align: center;
+    }
+        

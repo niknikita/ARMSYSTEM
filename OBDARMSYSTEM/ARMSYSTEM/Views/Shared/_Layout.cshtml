@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ARMSYSTEM</title>
-    <link href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.common-fiori.min.css" rel="stylesheet" type="text/css" />
     <link href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.material.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2017.3.913/styles/kendo.fiori.min.css" rel="stylesheet" type="text/css" />
 
     <script src="https://kendo.cdn.telerik.com/2017.3.913/js/jquery.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2017.3.913/js/jszip.min.js"></script>
@@ -54,8 +54,7 @@
                                 project.Add().Url("/Projects").Text("Проекты");
                                 project.Add().Url("/Projects/Create").Text("Создать проект");
                                 project.Add().Url("/Projects/Statistica").Text("Статистика по проекту");
-                                project.Add().Url("/Projects/Bases").Text("Базы данных  Проекта");
-                                project.Add().Url("/Projects/Edit").Text("Редактирование");
+                                project.Add().Url("/BasesProjects").Text("Базы данных  Проекта");                                
                             });
                         item.Add().Url("/BasesProjects").Text("Базы данных");
                         item.Add().Text("2ГИС").Enabled(false);
@@ -65,7 +64,7 @@
                  )
 
             </div>
-            <div class="col-lg-10">
+            <div class="col-lg-10 ">
                 @RenderBody()
             </div>
         </div>    

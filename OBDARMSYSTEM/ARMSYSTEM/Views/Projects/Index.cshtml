@@ -3,14 +3,32 @@
 @{
     ViewData["Title"] = "Index";
 }
-@(Html.Kendo().Grid<ARMSYSTEM.Models.Projects>()
+<div class="row">
+    <div class="col-lg-2">
+    @(Html.Kendo().Button()
+            .Name("ButtonCreateProject")
+            .Events(e => e.Click("onClick"))
+            .Content("Создать проект"))
+    </div>
+    <script>
+        function onClick(e) {
+            location = "Projects/Create/";
+        }
+    </script>
+
+</div>
+
+<div class="row">    
+    <div class="col-lg-12">
+        @(Html.Kendo().Grid<ARMSYSTEM.Models.Projects>()
         .Name("ProjectGrid")
-        .Columns(column=> {
+        .Columns(column =>
+        {
             column.Select().Width(50);
-            column.Bound(n => n.Name).ClientTemplate("<a href=" + Url.Content("Projects/Edit/") + "#: Id #>#: Name #</a></td>");
+            column.Bound(n => n.Name).ClientTemplate("<a href=" + Url.Content("Projects/Details/") + "#: Id #>#: Name #</a></td>");
             column.Bound(n => n.Descripion);
             column.Bound(n => n.DateCreate);
-            column.Command(command => command.Custom("Подробно..."));
+            column.Command(command => command.Custom("Details").Text("Подробно...").Click("onDetails"));
         })
         .ToolBar(toolbar =>
         {
@@ -29,7 +47,18 @@
             .Refresh(true)
             .PageSizes(new int[] { 100, 500, 1000 })
             .ButtonCount(10))
-        .DataSource(datasourse=>datasourse
+        .DataSource(datasourse => datasourse
         .Ajax()
-        .Read(read=>read.Action("ProjectDataRead", "Projects")))
+        .Read(read => read.Action("ProjectDataRead", "Projects")))
         )
+    </div>
+    <script>
+        function onDetails(e) {
+            e.preventDefault();
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));                                
+                Id = dataItem.Id;
+            location = "Projects/Details/" + Id;
+        }
+    </script>
+    
+</div >

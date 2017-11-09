@@ -12,7 +12,8 @@ namespace ARMSYSTEM.Models
         public DbSet<BlackList> BlackList { get; set; }
         public DbSet<Projects> Projects { get; set; }
         public DbSet<DefCode> DefCode { get; set; }
-        public DbSet<BasesProject> BasesProject { get; set; }        
+        public DbSet<BasesProject> BasesProject { get; set; }
+        public DbSet<PhoneBases> PhoneBases { get; set; }
         public PhonesContext(DbContextOptions<PhonesContext> options):base(options)
         {
 

@@ -26,11 +26,16 @@ namespace ARMSYSTEM.Controllers
         {
             return View();
         }
-
         public IActionResult ProjectDataRead([DataSourceRequest] DataSourceRequest request)
         {
-            return Json(db.BasesProject.Where(c=>c.idProject==idProject).ToDataSourceResult(request));
-        }        
+            return Json(db.Projects.ToDataSourceResult(request));
+        }
+
+
+        public IActionResult BasesProjectDataRead([DataSourceRequest] DataSourceRequest request, [Bind("id", "Name")] Projects Projectread)
+        {
+            return Json(db.BasesProject.Where(c => c.idProject == Projectread.Id).ToDataSourceResult(request));
+        }
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(long? id)
@@ -45,7 +50,9 @@ namespace ARMSYSTEM.Controllers
             if (projects == null)
             {
                 return NotFound();
-            }            
+            }
+            ViewBag.BasesProject = db.BasesProject.Where(c => c.idProject == id).Select(c => c.Name).ToList();
+            ViewBag.PhonesCount = db.PhoneBases.Where(p => p.idProject == id).Count();
             return View(projects);
         }
 
@@ -69,7 +76,7 @@ namespace ARMSYSTEM.Controllers
 
             if (ModelState.IsValid)
             {
-                if (db.Projects.Any(p => p.Name == projectsToCreate.Name)==false)
+                if (db.Projects.Any(p => p.Name == projectsToCreate.Name) == false)
                 {
                     db.Add(projectsToCreate);
                     projectsToCreate.DateCreate = DateTime.Now;
@@ -111,7 +118,7 @@ namespace ARMSYSTEM.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {                    
+                {
                     db.Update(projectToEdit);
                     await db.SaveChangesAsync();
                 }
