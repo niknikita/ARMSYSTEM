@@ -11,15 +11,20 @@ using Kendo.Mvc.UI;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using ARMSYSTEM.Services.FiltersFizPhone;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace ARMSYSTEM.Controllers
 {
     public class PhonesController : Controller
     {
-        private PhonesContext db;
-        public PhonesController(PhonesContext context)
+        private PhonesContext db;        
+        private IHostingEnvironment HostingEnvironment { get; set; }
+        public PhonesController(PhonesContext context, IHostingEnvironment hostingEnvironment)
         {
             db = context;
+            HostingEnvironment = hostingEnvironment;
         }
 
 
@@ -97,6 +102,24 @@ namespace ARMSYSTEM.Controllers
             {
                 return View();
             }
+        }
+        public ActionResult Save(IFormFile files)
+        {
+            // The Name of the Upload component is "files"
+            if (files != null)
+            {
+                string path = "/App_Data/" + files.FileName;
+                using (var fileStream = new FileStream(HostingEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    files.CopyToAsync(fileStream);
+                }
+                FileModel file = new FileModel { Name = files.FileName, Path = path };
+                db.File.Add(file);
+                db.SaveChanges();
+            }
+
+            // Return an empty string to signify success
+            return RedirectToAction("Create");
         }
 
         // GET: Phones/Edit/5

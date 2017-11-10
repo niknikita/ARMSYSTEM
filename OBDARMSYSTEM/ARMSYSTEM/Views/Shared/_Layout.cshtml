@@ -13,7 +13,15 @@
     <script src="https://kendo.cdn.telerik.com/2017.3.913/js/jszip.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2017.3.913/js/kendo.all.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2017.3.913/js/kendo.aspnetmvc.min.js"></script>
-
+    <script src="http://demos.telerik.com/aspnet-core/lib/kendo/js/cultures/kendo.culture.ru-RU.min.js"></script>
+    <script type="text/javascript">
+        //set culture of the Kendo UI
+        kendo.culture("ru-RU");
+    </script>
+    @using System.Globalization
+    @{
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("ru-RU");
+    }
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />        

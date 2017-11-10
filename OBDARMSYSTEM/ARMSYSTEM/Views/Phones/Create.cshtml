@@ -6,8 +6,15 @@
 }
 
 
+@(Html.Kendo().Upload()
+            .Name("files")
+            .ShowFileList(true)
+            .Async(a => a
+                .Save("Save", "Phones")                
+                .AutoUpload(true)
+            )
+)
 <hr />
-
 <div class="row">
     <div class="col-lg-10">
         <form asp-action="Create" asp-controller="Phones" method="post">
@@ -15,6 +22,7 @@
                 <label>Телефон</label>
                 <input type="tel" asp-for="Phone" class="k-textbox" pattern="[0-9]{9,10}"/>
             </div>
+            
             <div class="form-group">
                 <div class="row">
                     <div class=" col-lg-4">

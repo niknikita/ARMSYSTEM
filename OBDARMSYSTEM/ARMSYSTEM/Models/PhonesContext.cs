@@ -14,6 +14,7 @@ namespace ARMSYSTEM.Models
         public DbSet<DefCode> DefCode { get; set; }
         public DbSet<BasesProject> BasesProject { get; set; }
         public DbSet<PhoneBases> PhoneBases { get; set; }
+        public DbSet<FileModel> File { get; set; }
         public PhonesContext(DbContextOptions<PhonesContext> options):base(options)
         {
 

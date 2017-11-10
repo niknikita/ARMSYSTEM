@@ -17,5 +17,9 @@ namespace ARMSYSTEM.Services.FiltersFizPhone
         public List<string> MaskPhones { get; set; } //Маски телефонов ("7351*", "73519*", "735124700??")
         public List<string> Cities { get; set; } //Список городов        
         public Dictionary<string, string> Streets { get; set; } //Список улиц (город, улица)        
+        public string JsonDataCreate(Filters FiltersRead)
+        {
+            return "";
+        }
     }
 }
