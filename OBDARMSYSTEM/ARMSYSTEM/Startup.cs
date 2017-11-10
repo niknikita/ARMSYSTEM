@@ -25,6 +25,7 @@ namespace ARMSYSTEM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var inMemoryDataBase = Configuration.GetValue<bool>("ASPNETCORE_InMemoryDataBase");
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
             // Add framework services.
@@ -33,8 +34,15 @@ namespace ARMSYSTEM
                 // Maintain property names during serialization. See:
                 // https://github.com/aspnet/Announcements/issues/194
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-            services.AddDbContext<PhonesContext>(options =>
-                options.UseSqlServer(connection));
+
+            if (inMemoryDataBase)
+            {
+                services.AddDbContext<PhonesContext>(options => options.UseInMemoryDatabase(databaseName: "inMemoryDatabase"));
+            }
+            else
+            {
+                services.AddDbContext<PhonesContext>(options => options.UseSqlServer(connection));
+            }
             // Add Kendo UI services to the services container
             services.AddKendo();
         }
