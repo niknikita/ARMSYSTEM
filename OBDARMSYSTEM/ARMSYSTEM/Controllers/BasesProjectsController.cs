@@ -38,14 +38,14 @@ namespace ARMSYSTEM.Controllers
                     description = b.description,
                     dateCreate = b.dateCreate
                 });
-            List<BasesProjectViewModel> list = new List<BasesProjectViewModel>() ;
+            List<BasesProjectViewModel> list = new List<BasesProjectViewModel>();
             list.AddRange(rezult);
             return View(list);
         }
         public ActionResult BasesProjectRead([DataSourceRequest] DataSourceRequest request)
-        {   
+        {
             return Json(db.BasesProject.ToDataSourceResult(request));
-        }        
+        }
         // GET: BasesProjects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,19 +54,33 @@ namespace ARMSYSTEM.Controllers
                 return NotFound();
             }
 
-            var basesProject = await db.BasesProject
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (basesProject == null)
+            var rezult = db.BasesProject.Join(db.Projects,
+                b => b.idProject,
+                p => p.Id,
+                (b, p) => new BasesProjectViewModel
+                {
+                    id = b.id,
+                    Name = b.Name,
+                    ProjectName = p.Name,
+                    idParrentBase = b.idParrentBase,
+                    filters = b.filters,
+                    description = b.description,
+                    dateCreate = b.dateCreate
+                }).SingleOrDefault(c => c.id == id);
+
+            if (rezult == null)
             {
                 return NotFound();
             }
 
-            return View(basesProject);
+            ViewBag.PhoneCount = db.PhoneBases.Where(p => p.idBase == id).Count();
+            ViewBag.PhonesList = db.PhoneBases.Where(p => p.idBase == rezult.id);
+            return View(rezult);
         }
 
         // GET: BasesProjects/Create
         public IActionResult Create()
-        {   
+        {
             return View();
         }
         public ActionResult ProjectsRead([DataSourceRequest] DataSourceRequest request)
@@ -83,7 +97,7 @@ namespace ARMSYSTEM.Controllers
         public async Task<IActionResult> Create([Bind("id,Name,idProject,idParrentBase,filters,description,dateCreate")] BasesProject basesProjectread)
         {
             if (ModelState.IsValid)
-            {                
+            {
                 db.Add(basesProjectread);
                 basesProjectread.dateCreate = DateTime.Now;
                 await db.SaveChangesAsync();

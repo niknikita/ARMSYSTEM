@@ -1,4 +1,4 @@
-﻿@model ARMSYSTEM.Models.BlackList
+﻿@model ARMSYSTEM.Models.Filter
 
 @{
     ViewData["Title"] = "Details";
@@ -7,20 +7,20 @@
 <h2>Details</h2>
 
 <div>
-    <h4>BlackList</h4>
+    <h4>Filter</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Phone)
+            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.descripton)
+            @Html.DisplayNameFor(model => model.Template)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.descripton)
+            @Html.DisplayFor(model => model.Template)
         </dd>
     </dl>
 </div>

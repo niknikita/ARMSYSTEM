@@ -53,7 +53,7 @@
         .Filterable()
         .Pageable(pageable => pageable
             .Refresh(true)
-            .PageSizes(new int[] { 100, 500, 1000 })
+            .PageSizes(new int[] { 100, 500, 1000, 10000 })
             .ButtonCount(10))
         .DataSource(dataSourse => dataSourse
             .Ajax()

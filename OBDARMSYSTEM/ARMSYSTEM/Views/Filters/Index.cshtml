@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ARMSYSTEM.Models.Filter>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@(Html.Kendo().Button()
+    .Name("ButtonCreateFilter")
+    .Content("Создать фильтр")
+    .Events(ev => ev.Click("onClick")))
+<script>
+        function onClick(e) {
+            location = "Create/";
+        }
+</script>
+
+
+@(Html.Kendo().Grid(Model)
+    .Name("FilterGrid")
+    .Columns(column => {        
+        column.Bound(c => c.Name).Width(200);
+        column.Bound(C => C.Template);
+    })
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+    .Pageable()
+    .Navigatable()
+    .DataSource(source => source
+        .Ajax()
+        .Read("Filter","FilterRead"))
+    )

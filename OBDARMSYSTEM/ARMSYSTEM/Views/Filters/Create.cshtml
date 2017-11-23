@@ -1,0 +1,108 @@
+﻿@model ARMSYSTEM.Models.Filter
+@using ARMSYSTEM.ViewModels
+@using ARMSYSTEM.Services.FiltersFizPhone
+@using Kendo.Mvc.UI
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="row k-widget">
+    <div class="col-md-11">
+        <form asp-action="Create" asp-controller="Filters">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label asp-for="Name" class="control-label"></label>
+                    @(Html.Kendo().TextBoxFor(n => n.Name))
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    @(Html.Kendo().RadioButton().Name("Include").Checked(true).Label("Включить").Value(true))
+                    @(Html.Kendo().RadioButton().Name("Include").Checked(false).Label("Исключить").Value(false))
+                    @(Html.Kendo().CheckBox().Name("IsStatic").Checked(true).Label("Стационарный"))
+                    @(Html.Kendo().CheckBox().Name("IsMobile").Checked(true).Label("Мобильный"))
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    @(Html.Kendo().CheckBox().Name("DateTimeRange").Checked(true).Label("Дата/время обновления"))
+                    <kendo-datetimepicker name="DataTimeRangeStart" value="@DateTime.Now" max="@DateTime.Now" />
+                    <kendo-datetimepicker name="DataTimeRangeFinish" value="@DateTime.Now" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    @(Html.Kendo().MultiSelect()
+                        .Name("Cities")
+                        .Placeholder("Город...")
+                        .BindTo(new string[] {
+                            "Albania", "Andorra", "Armenia", "Austria",
+                            "Azerbaijan", "Belarus", "Belgium", "Bosnia & Herzegovina",
+                            "Bulgaria", "Croatia", "Cyprus", "Czech Republic",
+                            "Denmark", "Estonia", "Finland", "France",
+                            "Georgia", "Germany", "Greece", "Hungary",
+                            "Iceland", "Ireland", "Italy", "Kosovo",
+                            "Latvia", "Liechtenstein", "Lithuania", "Luxembourg",
+                            "Macedonia", "Malta", "Moldova", "Monaco",
+                            "Montenegro", "Netherlands", "Norway", "Poland",
+                            "Portugal", "Romania", "Russia", "San Marino",
+                            "Serbia", "Slovakia", "Slovenia", "Spain",
+                            "Sweden", "Switzerland", "Turkey", "Ukraine",
+                            "United Kingdom", "Vatican City"
+                        }).AutoClose(false))
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    @(Html.Kendo().MultiSelect()
+                        .Name("Streets")                        
+                        .Placeholder("Улицы...")
+                        .BindTo(new string[] {
+                            "ул. Павлова", "ул. Чехова", "пр-кт победы", "ул. Кирова",
+                            "ул. Гагарина"
+                        }).AutoClose(false))
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <kendo-button name="btn" type="submit" value="Create" class="btn btn-default">Сохранить</kendo-button>
+
+                    
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+@(Html.Kendo().Grid<ARMSYSTEM.Services.FiltersFizPhone.FilterTemplate>()
+        .Name("FilterTemplateGrid")
+        .Columns(column=> {
+            column.Bound(c => c.Id).Width(80);
+            column.Bound(c => c.Cities);
+            column.Command(command => command.Custom("test").Click("addItemGrid"));
+
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Save();
+        })
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .DataSource(source => source
+            .Ajax()
+            .Read("FilterTemplateRead", "Filters")
+            .Create("SaveFiltersTemplate", "Filters")
+            )
+)
+<script>
+    function addItemGrid()
+    {
+        var grid = $("#FilterTemplateGrid").data("kendoGrid");
+        grid.addRow();
+    }
+</script>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

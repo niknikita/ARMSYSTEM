@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ARMSYSTEM.Models;
 using ARMSYSTEM.ViewModels;
+using ARMSYSTEM.Services;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using ARMSYSTEM.Services.FiltersFizPhone;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http.Headers;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace ARMSYSTEM.Controllers
 {
@@ -35,8 +37,7 @@ namespace ARMSYSTEM.Controllers
         }
         public ActionResult PhoneModelRead([DataSourceRequest] DataSourceRequest request)
         {
-            var result = db.Phones.FromSql("SELECT A.* FROM [arm2].[dbo].[Phones] as A LEFT JOIN [arm2].dbo.BlackList as B ON B.phone = A.Phone WHERE B.phone IS NULL");
-
+            var result = db.Phones.FromSql("SELECT A.* FROM [arm2].[dbo].[Phones] as A LEFT JOIN [arm2].dbo.BlackList as B ON B.phone = A.Phone WHERE B.phone IS NULL");            
             return Json(result.ToDataSourceResult(request));
             //return Json(db.Phones.ToDataSourceResult(request));
         }        
@@ -68,6 +69,40 @@ namespace ARMSYSTEM.Controllers
         public ActionResult Create()
         {
             return View();
+        }
+        public ActionResult JsonTest()
+        {
+
+            var result = new List<FilterTemplate>() {
+                new FilterTemplate()
+                {
+                    Cities = new List<string>() { "Екатеринбург", "Челябинск" },
+                    DataTimeRangeFinish = DateTime.Now,
+                    DataTimeRangeStart = DateTime.Now,
+                    DateTimeRange = true,
+                    Include = false,
+                    Id = 1,
+                    IsMobile = true,
+                    IsStatic = true,
+                    Streets = new List<string>(){ "Победы","Кирова", "Свердловский тракт","пр-кт победы" }
+                },
+                new FilterTemplate()
+                {
+                    Cities = new List<string>() { "Екатеринбург", "Челябинск" },
+                    DataTimeRangeFinish = DateTime.Now,
+                    DataTimeRangeStart = DateTime.Now,
+                    DateTimeRange = false,
+                    Include = true,
+                    Id = 2,
+                    IsMobile = false,
+                    IsStatic = true,
+                    Streets = null
+                }
+
+            };
+
+
+            return Content(JsonConvert.SerializeObject(result));
         }
 
         // POST: Phones/Create
