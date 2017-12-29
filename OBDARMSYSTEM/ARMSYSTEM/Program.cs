@@ -7,6 +7,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace ARMSYSTEM
 {
@@ -20,6 +22,7 @@ namespace ARMSYSTEM
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseIISIntegration()
                 .Build();
     }
 }

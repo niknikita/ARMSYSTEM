@@ -1,0 +1,48 @@
+﻿@model ARMSYSTEM.Models.Timezone
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Timezone</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.city)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.city)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.region)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.region)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FO)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FO)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.population)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.population)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.timezone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.timezone)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

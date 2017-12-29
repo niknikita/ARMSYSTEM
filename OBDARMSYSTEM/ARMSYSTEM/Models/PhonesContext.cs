@@ -16,6 +16,7 @@ namespace ARMSYSTEM.Models
         public DbSet<PhoneBases> PhoneBases { get; set; }
         public DbSet<FileModel> File { get; set; }
         public DbSet<Filter> Filter { get; set; }
+        public DbSet<Timezone> Timezone { get; set; }
         public PhonesContext(DbContextOptions<PhonesContext> options):base(options)
         {
 

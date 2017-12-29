@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ARMSYSTEM.Models;
+using ARMSYSTEM.ViewModels;
 using ARMSYSTEM.Services.FiltersFizPhone;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
@@ -31,40 +32,36 @@ namespace ARMSYSTEM.Controllers
         {
             return Json(db.Filter.ToDataSourceResult(request));
         }
+
         public ActionResult FilterTemplateRead([DataSourceRequest] DataSourceRequest request)
         {
-            var result = new List<FilterTemplate>() {
-                new FilterTemplate()
-                {
-                    Cities = new List<string>() { "Екатеринбург", "Челябинск" },
-                    DataTimeRangeFinish = DateTime.Now,
-                    DataTimeRangeStart = DateTime.Now,
-                    DateTimeRange = true,
-                    Include = false,
-                    Id = 1,
-                    IsMobile = true,
-                    IsStatic = true,
-                    Streets = new List<string>(){ "Победы","Кирова", "Свердловский тракт","пр-кт победы" }
-                },
-                new FilterTemplate()
-                {
-                    Cities = new List<string>() { "Екатеринбург", "Челябинск" },
-                    DataTimeRangeFinish = DateTime.Now,
-                    DataTimeRangeStart = DateTime.Now,
-                    DateTimeRange = false,
-                    Include = true,
-                    Id = 2,
-                    IsMobile = false,
-                    IsStatic = true,
-                    Streets = null
-                }
+            var filter = db.Filter;
 
-            };
+            var filtertemplates = new List<FilterTemplate>();
+            foreach (var f in filter)
+            {
+                filtertemplates.Add(JsonConvert.DeserializeObject<FilterTemplate>(f.Template));
+            }
+
+            var str = string.Join(", ", filtertemplates.Select(c => c.Cities));
+
+            var result = filtertemplates.Select(d => new FilterItemViewModel
+            {
+                Cities = string.Join(", ", d.Cities),
+                DataTimeRangeFinish = d.DataTimeRangeFinish,
+                DataTimeRangeStart = d.DataTimeRangeStart,
+                DateTimeRange = d.DateTimeRange,
+                Include = d.Include,
+                IsMobile = d.IsMobile,
+                IsStatic = d.IsStatic,
+                Streets = string.Join(", ", d.Streets)
+            });
+
             return Json(result.ToDataSourceResult(request));
         }
 
         [AcceptVerbs("Post")]
-        public ActionResult SaveFiltersTemplate([DataSourceRequest] DataSourceRequest request,  [Bind(Prefix = "models")]IEnumerable<FilterTemplate> template)
+        public ActionResult SaveFiltersTemplate([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<FilterTemplate> template)
         {
             var result = new List<FilterTemplate>() {
                 new FilterTemplate()
@@ -115,7 +112,7 @@ namespace ARMSYSTEM.Controllers
         }
 
         // GET: Filters/Create
-        public IActionResult Create()
+        public IActionResult Create([Bind("id")] FilterItemViewModel filter)
         {
             return View();
         }

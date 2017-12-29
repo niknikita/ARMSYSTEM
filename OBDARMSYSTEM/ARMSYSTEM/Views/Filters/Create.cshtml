@@ -2,12 +2,18 @@
 @using ARMSYSTEM.ViewModels
 @using ARMSYSTEM.Services.FiltersFizPhone
 @using Kendo.Mvc.UI
+
 @{
     ViewData["Title"] = "Create";
 }
-<div class="row k-widget">
+
+
+
+
+<div class="row k-widget" style="font-size:10px">
     <div class="col-md-11">
-        <form asp-action="Create" asp-controller="Filters">
+        
+        <form asp-action="Create" asp-controller="Filters" data-ajax="true" data-ajax-method="POST" data-ajax-complete ="onComplete">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="form-group col-lg-4">
@@ -56,7 +62,7 @@
             <div class="row">
                 <div class="form-group col-lg-12">
                     @(Html.Kendo().MultiSelect()
-                        .Name("Streets")                        
+                        .Name("Streets")
                         .Placeholder("Улицы...")
                         .BindTo(new string[] {
                             "ул. Павлова", "ул. Чехова", "пр-кт победы", "ул. Кирова",
@@ -75,22 +81,24 @@
         </form>
     </div>
 </div>
-@(Html.Kendo().Grid<ARMSYSTEM.Services.FiltersFizPhone.FilterTemplate>()
+@(Html.Kendo().Grid<ARMSYSTEM.ViewModels.FilterItemViewModel>()
         .Name("FilterTemplateGrid")
         .Columns(column=> {
-            column.Bound(c => c.Id).Width(80);
-            column.Bound(c => c.Cities);
-            column.Command(command => command.Custom("test").Click("addItemGrid"));
-
+            column.Bound(c => c.Include);
+            column.Bound(c => c.IsMobile);
+            column.Bound(c => c.Cities).Width(200);
+            column.Bound(c => c.Streets);
+            column.Bound(c => c.DateTimeRange);
+            column.Bound(c => c.DataTimeRangeStart).Width(130);
+            column.Bound(c => c.DataTimeRangeFinish).Width(130);
         })
-        .ToolBar(toolbar =>
-        {
-            toolbar.Create();
-            toolbar.Save();
-        })
-        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+        .ToolBar(toolbar => toolbar.Create())
+        .Pageable()
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))        
         .DataSource(source => source
             .Ajax()
+            .PageSize(10)
+            .AutoSync(true)
             .Read("FilterTemplateRead", "Filters")
             .Create("SaveFiltersTemplate", "Filters")
             )
@@ -101,6 +109,13 @@
         var grid = $("#FilterTemplateGrid").data("kendoGrid");
         grid.addRow();
     }
+    function onComplete()
+    {
+        var grid = $('#FilterTemplateGrid').data('kendoGrid');
+        grid.dataSource.read();
+        grid.refresh();
+    }
+
 </script>
 
 <div>

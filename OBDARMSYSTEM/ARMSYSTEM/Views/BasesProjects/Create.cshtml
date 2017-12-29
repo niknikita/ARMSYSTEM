@@ -5,84 +5,82 @@
 }
 
 
-
-
 <div class="row">
     <div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @(Html.Kendo().TabStrip()
-            .Name("Tab")
-            .HtmlAttributes(new { style = "height:500px;" })
-            .Animation(animation => animation.Open(effect => effect.Fade(FadeDirection.In)))
-              .Items(tabstrip =>
-              {
-              tabstrip.Add().Text("Название базы").Selected(true).Content(
-                    @<text>
-                    <div class="form-group">
-                        <div class="col-lg-3"><label asp-for="Name" class="control-label "></label></div>
-                        <div class="col-lg-7">@(Html.Kendo().TextBoxFor(n => n.Name).HtmlAttributes(new { style = "width:90%" }))</div>
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-3"><label asp-for="idProject" class="control-label "></label></div>
-                        <div class="col-lg-7">
-                            @(Html.Kendo().ComboBox()
-                                .Name("idProject")
-                                .DataTextField("Name")
-                                .DataValueField("Id")
-                                .Filter(FilterType.Contains)
-                                .AutoBind(false)
-                                .DataSource(source =>
-                                {
-                                    source.Ajax();
-                                    source.Read(read =>
-                                    {
-                                        read.Action("ProjectsRead", "BasesProjects");
-                                    }).ServerFiltering(true);
-                                })
-                            )
-                        </div>
-                        <span asp-validation-for="idProject" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-3"><label asp-for="idParrentBase" class="control-label"></label></div>
-                        <div class="col-lg-7"><input asp-for="idParrentBase" class="form-control" /></div>
-                        <span asp-validation-for="idParrentBase" class="text-danger"></span>
-                    </div>
+.Name("Tab")
+.HtmlAttributes(new { style = "height:500px;" })
+.Animation(animation => animation.Open(effect => effect.Fade(FadeDirection.In)))
+.Items(tabstrip =>
+{
+tabstrip.Add().Text("Название базы").Selected(true).Content(
+    @<text>
+    <div class="form-group">
+        <div class="col-lg-3"><label asp-for="Name" class="control-label "></label></div>
+        <div class="col-lg-7">@(Html.Kendo().TextBoxFor(n => n.Name).HtmlAttributes(new { style = "width:90%" }))</div>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-3"><label asp-for="idProject" class="control-label "></label></div>
+        <div class="col-lg-7">
+            @(Html.Kendo().ComboBox()
+                .Name("idProject")
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .Filter(FilterType.Contains)
+                .AutoBind(false)
+                .DataSource(source =>
+                {
+                    source.Ajax();
+                    source.Read(read =>
+                    {
+                        read.Action("ProjectsRead", "BasesProjects");
+                    }).ServerFiltering(true);
+                })
+            )
+        </div>
+        <span asp-validation-for="idProject" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-3"><label asp-for="idParrentBase" class="control-label"></label></div>
+        <div class="col-lg-7"><input asp-for="idParrentBase" class="form-control" /></div>
+        <span asp-validation-for="idParrentBase" class="text-danger"></span>
+    </div>
 
-                    </text>);
-                  tabstrip.Add().Text("Фильтры").Content(
-                    @<text>
-                    <div class="form-group">
-                        @(Html.Kendo().RadioButton().Name("check").Label("Включить в запрос").Value("1"))
-                        @(Html.Kendo().RadioButton().Name("check").Label("Исключить из запроса").Value("2"))
-                        <br />
-                        @(Html.Kendo().CheckBox().Name("IsStatic").Label("Стационарный").Checked(true))
-                        @(Html.Kendo().CheckBox().Name("IsMobile").Label("Мобильный").Checked(true))
-                        <br />
-                        @(Html.Kendo().CheckBox().Name("DateTimeRange").Label("Дата время от/до").Checked(true))
-                        <br />
-                        @(Html.Kendo().DateTimePicker().Name("DataTimeRangeStart").Value(DateTime.Now))
-                        @(Html.Kendo().DateTimePicker().Name("DataTimeRangeFinish").Value(DateTime.Now))
-                        @(Html.Kendo().MultiSelect().Name("CitiList").Placeholder("Выберете город...").AutoClose(false))
+    </text>);
+tabstrip.Add().Text("Фильтры").Content(
+    @<text>
+    <div class="form-group">
+        @(Html.Kendo().RadioButton().Name("check").Label("Включить в запрос").Value("1"))
+        @(Html.Kendo().RadioButton().Name("check").Label("Исключить из запроса").Value("2"))
+        <br />
+        @(Html.Kendo().CheckBox().Name("IsStatic").Label("Стационарный").Checked(true))
+        @(Html.Kendo().CheckBox().Name("IsMobile").Label("Мобильный").Checked(true))
+        <br />
+        @(Html.Kendo().CheckBox().Name("DateTimeRange").Label("Дата время от/до").Checked(true))
+        <br />
+        @(Html.Kendo().DateTimePicker().Name("DataTimeRangeStart").Value(DateTime.Now))
+        @(Html.Kendo().DateTimePicker().Name("DataTimeRangeFinish").Value(DateTime.Now))
+        @(Html.Kendo().MultiSelect().Name("CitiList").Placeholder("Выберете город...").AutoClose(false))
 
-                        <!--<input asp-for="filters" class="form-control" />-->
-                        <span asp-validation-for="filters" class="text-danger"></span>
-                    </div>
-                    </text>);
-                  tabstrip.Add().Text("Описание").Content(
-                    @<text>
-                    <div class="form-group">
-                        <label asp-for="description" class="control-label"></label>
-                        <textarea asp-for="description" class="form-control k-textbox"></textarea>
-                        <span asp-validation-for="description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-default" />
-                    </div>
-                    </text>);
-              }))
+        <!--<input asp-for="filters" class="form-control" />-->
+        <span asp-validation-for="filters" class="text-danger"></span>
+    </div>
+    </text>);
+tabstrip.Add().Text("Описание").Content(
+    @<text>
+    <div class="form-group">
+        <label asp-for="description" class="control-label"></label>
+        <textarea asp-for="description" class="form-control k-textbox"></textarea>
+        <span asp-validation-for="description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+    </text>);
+}))
 
 
 
