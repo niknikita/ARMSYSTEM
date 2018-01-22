@@ -12,8 +12,8 @@
 
 <div class="row k-widget" style="font-size:10px">
     <div class="col-md-11">
-        
-        <form asp-action="Create" asp-controller="Filters" data-ajax="true" data-ajax-method="POST" data-ajax-complete ="onComplete">
+
+        <form asp-action="Create" asp-controller="Filters" data-ajax="true" data-ajax-method="POST" data-ajax-complete="onComplete">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="form-group col-lg-4">
@@ -74,7 +74,7 @@
                 <div class="form-group col-lg-12">
                     <kendo-button name="btn" type="submit" value="Create" class="btn btn-default">Сохранить</kendo-button>
 
-                    
+
                 </div>
 
             </div>
@@ -83,7 +83,8 @@
 </div>
 @(Html.Kendo().Grid<ARMSYSTEM.ViewModels.FilterItemViewModel>()
         .Name("FilterTemplateGrid")
-        .Columns(column=> {
+        .Columns(column =>
+        {
             column.Bound(c => c.Include);
             column.Bound(c => c.IsMobile);
             column.Bound(c => c.Cities).Width(200);
@@ -94,7 +95,7 @@
         })
         .ToolBar(toolbar => toolbar.Create())
         .Pageable()
-        .Editable(editable => editable.Mode(GridEditMode.PopUp))        
+        .Editable(editable => editable.Mode(GridEditMode.PopUp))
         .DataSource(source => source
             .Ajax()
             .PageSize(10)

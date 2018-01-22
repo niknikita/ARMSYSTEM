@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ARMSYSTEM.Models;
 using ARMSYSTEM.ViewModels;
@@ -35,29 +36,35 @@ namespace ARMSYSTEM.Controllers
 
         public ActionResult FilterTemplateRead([DataSourceRequest] DataSourceRequest request)
         {
-            var filter = db.Filter;
-
-            var filtertemplates = new List<FilterTemplate>();
-            foreach (var f in filter)
+            var filter = db.Filter.Where(c => c.Name == "sds");
+            var filterName = HttpContext.Session.Get<string>("filterName");
+            IEnumerable<FilterItemViewModel> result = null;
+            if (filterName != null)
             {
-                filtertemplates.Add(JsonConvert.DeserializeObject<FilterTemplate>(f.Template));
+                var filtertemplates = HttpContext.Session.Get<List<FilterTemplate>>(filterName);
+                //var filtertemplates = new List<FilterTemplate>();
+                //foreach (var f in filter)
+                //{
+                //    filtertemplates.Add(JsonConvert.DeserializeObject<FilterTemplate>(f.Template));
+                //}
+
+                //var str = string.Join(", ", filtertemplates.Select(c => c.Cities));
+
+                result = filtertemplates.Select(d => new FilterItemViewModel
+                {
+                    Cities = string.Join(", ", d.Cities),
+                    DataTimeRangeFinish = d.DataTimeRangeFinish,
+                    DataTimeRangeStart = d.DataTimeRangeStart,
+                    DateTimeRange = d.DateTimeRange,
+                    Include = d.Include,
+                    IsMobile = d.IsMobile,
+                    IsStatic = d.IsStatic,
+                    Streets = string.Join(", ", d.Streets)
+                });
+
+                return Json(result.ToDataSourceResult(request));
             }
-
-            var str = string.Join(", ", filtertemplates.Select(c => c.Cities));
-
-            var result = filtertemplates.Select(d => new FilterItemViewModel
-            {
-                Cities = string.Join(", ", d.Cities),
-                DataTimeRangeFinish = d.DataTimeRangeFinish,
-                DataTimeRangeStart = d.DataTimeRangeStart,
-                DateTimeRange = d.DateTimeRange,
-                Include = d.Include,
-                IsMobile = d.IsMobile,
-                IsStatic = d.IsStatic,
-                Streets = string.Join(", ", d.Streets)
-            });
-
-            return Json(result.ToDataSourceResult(request));
+            return Json(null);
         }
 
         [AcceptVerbs("Post")]
@@ -124,11 +131,39 @@ namespace ARMSYSTEM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,Name")] Filter filter, [Bind("Include,IsStatic,IsMobile,DateTimeRange,DataTimeRangeStart,DataTimeRangeFinish,Cities,Streets")]FilterTemplate filterTemplate)
         {
+
             if (ModelState.IsValid)
             {
-                filter.Template = JsonConvert.SerializeObject(filterTemplate);
-                db.Filter.Add(filter);
+                var filterTemplateListItem = new List<FilterTemplate>();
+                if (HttpContext.Session.GetString(filter.Name) != null)
+                {
+                    filterTemplateListItem = HttpContext.Session.Get<List<FilterTemplate>>(filter.Name);
+                    filterTemplateListItem.Add(filterTemplate);
+                }
+                else
+                {
+                    filterTemplateListItem.Add(filterTemplate);
+                    HttpContext.Session.Set("filterName", filter.Name);
+                }
+
+                HttpContext.Session.Set(filter.Name, filterTemplateListItem);
+                filter.Template = HttpContext.Session.GetString(filter.Name);
+
+                var fn = HttpContext.Session.Get<string>("filterName");
+
+                if (db.Filter.Select(arg => arg.Name).Any(f => f == fn))
+                {
+                    filter.id = db.Filter.SingleOrDefault(c => c.Name == fn).id;
+                    db.Filter.Update(filter);
+                }
+                else
+                {
+                    db.Filter.Add(filter);
+                }
+
+
                 await db.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(filter);
@@ -195,6 +230,7 @@ namespace ARMSYSTEM.Controllers
 
             var filter = await db.Filter
                 .SingleOrDefaultAsync(m => m.id == id);
+
             if (filter == null)
             {
                 return NotFound();
@@ -217,6 +253,20 @@ namespace ARMSYSTEM.Controllers
         private bool FilterExists(int id)
         {
             return db.Filter.Any(e => e.id == id);
+        }
+    }
+    public static class SessionExtensions
+    {
+        public static void Set<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+
+        public static T Get<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+            return value == null ? default(T) :
+                                  JsonConvert.DeserializeObject<T>(value);
         }
     }
 }

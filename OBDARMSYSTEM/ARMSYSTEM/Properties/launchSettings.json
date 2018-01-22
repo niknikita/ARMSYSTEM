@@ -18,7 +18,7 @@
     "ARMSYSTEM": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://192.168.50.99:5000",
+      "launchUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
